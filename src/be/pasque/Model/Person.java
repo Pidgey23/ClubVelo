@@ -26,16 +26,13 @@ public abstract class Person {
     public static Person authenticate(String email, String password) {
         PersonDAO personDAO = new PersonDAO();
         String role = personDAO.getRoleByEmailAndPassword(email, password);
-
         if (role == null) {
             return null;
         }
-
         Long personId = personDAO.getPersonIdByEmail(email);
         if (personId == null) {
             return null;
         }
-
         return switch (role) {
             case "MEMBER"    -> new MemberDAO().getMemberByPersonId(personId);
             case "MANAGER"   -> new ManagerDAO().getManagerByPersonId(personId);
@@ -43,6 +40,7 @@ public abstract class Person {
             default -> null;
         };
     }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

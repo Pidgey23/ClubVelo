@@ -1,6 +1,7 @@
 package be.pasque.Model;
 
 import be.pasque.DAO.RideDAO;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +15,6 @@ public class Ride {
     private Category category;
 
     private final List<Inscription> inscriptions = new ArrayList<>();
-
     private static final RideDAO rideDAO = new RideDAO();
 
     public Ride() {}
@@ -33,8 +33,8 @@ public class Ride {
         }
     }
 
-    public List<Inscription> getInscriptions() { 
-        return inscriptions; 
+    public List<Inscription> getInscriptions() {
+        return inscriptions;
     }
 
     public int getDriversCount() {
@@ -49,46 +49,28 @@ public class Ride {
         return (int) inscriptions.stream().filter(Inscription::isNeedsBikeTransport).count();
     }
 
-
     public int getAvailableSeats() {
-
         int offered = inscriptions.stream()
                 .filter(Inscription::isDriver)
                 .mapToInt(i -> i.getVehicleUsed() != null ? i.getVehicleUsed().getSeatNumber() - 1 : 0)
                 .sum();
-        
         int occupied = getPassengersCount();
-        
         return offered - occupied;
     }
 
-
     public int getAvailableBikeSpots() {
-
         int offered = inscriptions.stream()
                 .filter(Inscription::isDriver)
                 .mapToInt(i -> i.getVehicleUsed() != null ? i.getVehicleUsed().getBikeSpotNumber() : 0)
                 .sum();
-        
         int bikesNeeded = getBikeTransportRequests();
-        
         return offered - bikesNeeded;
     }
-
-    public int getTotalParticipants() {
-
-        return (int) inscriptions.stream()
-                .map(Inscription::getMember)
-                .distinct()
-                .count();
-    }
-
 
     public static Ride findByIdWithAllDetails(Long rideId) {
         return rideDAO.findByIdWithAllDetails(rideId);
     }
 
-  
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

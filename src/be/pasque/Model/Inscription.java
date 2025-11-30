@@ -8,7 +8,7 @@ public class Inscription {
 
     private Ride ride;
     private Member member;
-    private Vehicle vehicleUsed;  
+    private Vehicle vehicleUsed;
 
     public Inscription() {}
 
@@ -19,7 +19,6 @@ public class Inscription {
         this.isPassenger = isPassenger;
         this.needsBikeTransport = needsBikeTransport;
     }
-
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

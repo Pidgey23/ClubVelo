@@ -27,8 +27,4 @@ public class Calendar {
             }
         }
     }
-
-    public void clear() {
-        rides.clear();
-    }
 }

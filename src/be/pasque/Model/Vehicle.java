@@ -1,17 +1,13 @@
 package be.pasque.Model;
 
-
-
 public class Vehicle {
     private Long id;
     private int seatNumber = 5;
     private int bikeSpotNumber = 0;
     private Member driver;
+    private String customLabel = null;
 
     public Vehicle() {}
-
-    public int getAvailableSeats() { return seatNumber - 1; } 
-    public int getAvailableBikeSpots() { return bikeSpotNumber; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -24,7 +20,6 @@ public class Vehicle {
 
     public Member getDriver() { return driver; }
     public void setDriver(Member driver) { this.driver = driver; }
-    private String customLabel = null;
 
     public void setCustomLabel(String label) {
         this.customLabel = label;
