@@ -1,0 +1,95 @@
+
+
+CREATE TABLE Person (
+    PersonID INT AUTO_INCREMENT PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Phone VARCHAR(20),
+    Password VARCHAR(255),
+    Email VARCHAR(255)
+);
+
+CREATE TABLE Category (
+    CategoryID INT AUTO_INCREMENT PRIMARY KEY,
+    Type VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Member (
+    MemberID INT AUTO_INCREMENT PRIMARY KEY,
+    PersonID INT NOT NULL,
+    Balance DECIMAL(10,2) DEFAULT 0,
+    MembershipPaid BOOLEAN DEFAULT FALSE,
+    CONSTRAINT FK_Member_Person FOREIGN KEY (PersonID)
+        REFERENCES Person(PersonID) ON DELETE CASCADE
+);
+
+CREATE TABLE Ride (
+    RideID INT AUTO_INCREMENT PRIMARY KEY,
+    StartPlace VARCHAR(100),
+    StartDate DATETIME,
+    Fee DECIMAL(10,2) DEFAULT 0,
+    CategoryID INT,
+    CONSTRAINT FK_Ride_Category FOREIGN KEY (CategoryID)
+        REFERENCES Category(CategoryID) ON DELETE CASCADE
+);
+
+CREATE TABLE Bike (
+    BikeID INT AUTO_INCREMENT PRIMARY KEY,
+    MemberID INT NOT NULL,
+    Weight FLOAT,
+    Type VARCHAR(50),
+    Length FLOAT,
+    CONSTRAINT FK_Bike_Member FOREIGN KEY (MemberID)
+        REFERENCES Member(MemberID) ON DELETE CASCADE
+);
+
+CREATE TABLE Vehicle (
+    VehicleID INT AUTO_INCREMENT PRIMARY KEY,
+    DriverID INT NOT NULL,
+    SeatNumber INT DEFAULT 0,
+    BikeSpotNumber INT DEFAULT 0,
+    CONSTRAINT FK_Vehicle_Member FOREIGN KEY (DriverID)
+        REFERENCES Member(MemberID) ON DELETE CASCADE
+);
+
+CREATE TABLE Inscription (
+    InscriptionID INT AUTO_INCREMENT PRIMARY KEY,
+    RideID INT,
+    IsPassenger BOOLEAN DEFAULT FALSE,
+    IsDriver BOOLEAN DEFAULT FALSE,
+    MemberID INT NOT NULL,
+    VehicleID INT,
+    NeedsBikeTransport BOOLEAN DEFAULT FALSE,
+    CONSTRAINT FK_Inscription_Member FOREIGN KEY (MemberID)
+        REFERENCES Member(MemberID) ON DELETE CASCADE,
+    CONSTRAINT FK_Inscription_Ride FOREIGN KEY (RideID)
+        REFERENCES Ride(RideID) ON DELETE CASCADE,
+    CONSTRAINT FK_Inscription_Vehicle FOREIGN KEY (VehicleID)
+        REFERENCES Vehicle(VehicleID) ON DELETE SET NULL
+);
+
+CREATE TABLE Manager (
+    ManagerID INT AUTO_INCREMENT PRIMARY KEY,
+    PersonID INT NOT NULL,
+    CategoryID INT NOT NULL,
+    CONSTRAINT FK_Manager_Person FOREIGN KEY (PersonID)
+        REFERENCES Person(PersonID) ON DELETE CASCADE,
+    CONSTRAINT FK_Manager_Category FOREIGN KEY (CategoryID)
+        REFERENCES Category(CategoryID) ON DELETE CASCADE
+);
+
+CREATE TABLE Treasurer (
+    PersonID INT PRIMARY KEY,
+    CONSTRAINT FK_Treasurer_Person FOREIGN KEY (PersonID)
+        REFERENCES Person(PersonID) ON DELETE CASCADE
+);
+
+CREATE TABLE Member_Category (
+    MemberID INT NOT NULL,
+    CategoryID INT NOT NULL,
+    PRIMARY KEY (MemberID, CategoryID),
+    CONSTRAINT FK_MemberCategory_Member FOREIGN KEY (MemberID)
+        REFERENCES Member(MemberID) ON DELETE CASCADE,
+    CONSTRAINT FK_MemberCategory_Category FOREIGN KEY (CategoryID)
+        REFERENCES Category(CategoryID) ON DELETE CASCADE
+);
